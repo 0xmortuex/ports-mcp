@@ -235,9 +235,15 @@ def hint_for(info: ProcInfo) -> Hint | None:
     for label, kind, any_of, all_of, advice in _RULES:
         if toks & any_of and all_of <= toks:
             return Hint(label, kind, advice)
-    stem = _EXT.sub("", (info.name or "").lower())
-    if stem.startswith("python"):
-        return Hint("Python process", "runtime")
-    if stem in _GENERIC_RUNTIMES:
-        return Hint(_GENERIC_RUNTIMES[stem], "runtime")
+    # On Linux the OS-reported name can be a thread name ("MainThread" for Node), so also
+    # try the executable's basename from the command line.
+    names = [info.name or ""]
+    if info.cmdline:
+        names.append(info.cmdline[0].replace("\\", "/").rsplit("/", 1)[-1])
+    for name in names:
+        stem = _EXT.sub("", name.lower())
+        if stem.startswith("python"):
+            return Hint("Python process", "runtime")
+        if stem in _GENERIC_RUNTIMES:
+            return Hint(_GENERIC_RUNTIMES[stem], "runtime")
     return None

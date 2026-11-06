@@ -174,7 +174,9 @@ def _describe(info: ProcInfo, hint: Hint | None) -> str:
 def _build_targets(port: int, proto: str) -> tuple[list[Target], list[str]]:
     res = listeners_on_port(port, proto)
     if not res.listeners:
-        if res.notes or probe_hidden_listener(port):
+        # Only claim a hidden listener when this specific port probes as occupied. Unrelated
+        # hidden sockets elsewhere on the machine (res.notes) say nothing about this port.
+        if probe_hidden_listener(port):
             raise PortsError(
                 f"Something may be using port {port} but this process cannot see which. "
                 + " ".join(res.notes)

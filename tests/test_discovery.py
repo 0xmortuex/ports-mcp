@@ -183,3 +183,13 @@ def test_own_interpreter_is_a_python_process() -> None:
     info = proc_info(psutil.Process().pid)
     assert info is not None and info.cmdline and sys.version_info >= (3, 10)
     assert hint_for(info) is not None
+
+
+def test_thread_name_does_not_hide_the_runtime() -> None:
+    # Linux reports the main thread's name ("MainThread" for Node, the test runner for
+    # Python) instead of the executable name, so the hint must fall back to argv[0].
+    node = ProcInfo(1, "MainThread", ["/usr/local/bin/node", "/srv/app.js"], None, None, None, None)
+    py = ProcInfo(2, "pytest", ["/opt/python/bin/python3.12", "-m", "pytest"], None, None, None, None)
+    h_node, h_py = hint_for(node), hint_for(py)
+    assert h_node is not None and h_node.label == "Node.js process"
+    assert h_py is not None and h_py.label == "Python process"
