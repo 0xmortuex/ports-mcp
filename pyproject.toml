@@ -1,0 +1,47 @@
+[project]
+name = "ports-mcp"
+version = "0.1.0"
+description = "Cross-platform MCP server that answers 'what is using port 3000?' and safely frees it: listeners, process trees, free-port search and a two-step confirmed kill. Windows, macOS and Linux."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "0xmortuex" }]
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=2.0.0",
+    "psutil>=6.0.0",
+]
+keywords = ["mcp", "ports", "psutil", "netstat", "lsof", "devtools", "kill-port", "ai-agent"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development",
+    "Topic :: System :: Networking",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7", "anyio", "types-psutil"]
+
+[project.urls]
+Homepage = "https://github.com/0xmortuex/ports-mcp"
+
+[project.scripts]
+ports-mcp = "ports_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ports_mcp"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

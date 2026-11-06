@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.0xmortuex/ports-mcp",
+  "description": "Find what is using a port and free it safely, on Windows, macOS and Linux.",
+  "repository": {
+    "url": "https://github.com/0xmortuex/ports-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "ports-mcp",
+      "version": "0.1.0",
+      "transport": { "type": "stdio" }
+    }
+  ]
+}
