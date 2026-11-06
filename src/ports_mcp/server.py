@@ -406,7 +406,9 @@ def check_port_reachable(host: str, port: int, timeout: float = 3.0) -> str:
     except TimeoutError:
         return (
             f"UNREACHABLE: {host}:{port} did not answer within {timeout:g} s. A firewall is "
-            "probably dropping packets, or the host is down."
+            "probably dropping packets, or the host is down. (On Windows a refused "
+            "connection to localhost can take about 2 s to be reported, so with a short "
+            "timeout a closed local port looks like this; retry with timeout=5.)"
         )
     except ConnectionRefusedError:
         return (
